@@ -1,0 +1,13 @@
+openapi: 3.1.0
+info:
+  title: TodoMVC
+  version: '1.0'
+  summary: This API is a backend storage solution for the TodoMVC project.
+  description: The TodoMVC API allows you persist data from any implementation of the TodoMVC frontend project.
+  contact:
+    url: 'https://www.longhornphp.com'
+servers:
+  - url: 'http://localhost:3000'
+paths: {}
+components:
+  schemas: {}
