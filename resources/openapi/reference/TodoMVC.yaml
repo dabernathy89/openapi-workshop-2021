@@ -8,6 +8,48 @@ info:
     url: 'https://www.longhornphp.com'
 servers:
   - url: 'http://localhost:3000'
-paths: {}
+paths:
+  /todos:
+    get:
+      summary: Get Todos
+      tags:
+        - Todos
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                minItems: 1
+                uniqueItems: true
+                items:
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    id:
+                      type: integer
+                      minimum: 1
+                    title:
+                      type: string
+                    completed:
+                      type: boolean
+                  required:
+                    - id
+                    - title
+                    - completed
+              examples:
+                example-1:
+                  value:
+                    - id: 1
+                      title: Complete Sponsor Bingo Card
+                      completed: false
+                    - id: 2
+                      title: Rate talks on Joind.in
+                      completed: false
+      operationId: get-todos
+      description: Get all todos
 components:
   schemas: {}
+tags:
+  - name: Todos
