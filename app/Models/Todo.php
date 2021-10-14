@@ -12,6 +12,6 @@ class Todo extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'completed' => 'integer',
+        'completed' => 'boolean',
     ];
 }
