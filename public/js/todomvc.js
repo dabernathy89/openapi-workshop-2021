@@ -2,7 +2,7 @@
 // and hash-based routing in ~120 effective lines of JavaScript.
 
 // localStorage persistence
-const BASE_URL = 'http://127.0.0.1:3101';
+const BASE_URL = 'http://127.0.0.1:3100/api';
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
@@ -55,6 +55,7 @@ const app = Vue.createApp({
       set(value) {
         this.todos.forEach((todo) => {
           todo.completed = value;
+          this.save(todo);
         });
       }
     }

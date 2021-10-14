@@ -25,7 +25,12 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $todo = Todo::create([
+            'title' => $request->input('title'),
+            'completed' => $request->input('completed'),
+        ]);
+
+        return response()->json($todo, 201);
     }
 
     /**
@@ -37,7 +42,12 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
-        //
+        $todo->update([
+            'title' => $request->input('title', $todo->title),
+            'completed' => $request->input('completed', $todo->completed),
+        ]);
+
+        return response()->json($todo->fresh(), 200);
     }
 
     /**
@@ -48,6 +58,8 @@ class TodoController extends Controller
      */
     public function destroy(Todo $todo)
     {
-        //
+        $todo->delete();
+
+        return response()->json(null, 204);
     }
 }

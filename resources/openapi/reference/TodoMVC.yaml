@@ -46,17 +46,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Todo'
+              type: object
+              additionalProperties: false
+              properties:
+                title:
+                  type: string
+                completed:
+                  type: boolean
+              required:
+                - title
+                - completed
         description: ''
-  '/todos/{todoId}':
+  '/todos/{todo}':
     parameters:
       - schema:
-          type: integer
-          minimum: 1
-        name: todoId
+          type: string
+        name: todo
         in: path
         required: true
-        description: Todo ID
     patch:
       summary: Update Todo
       tags:
@@ -74,7 +81,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Todo'
+              type: object
+              properties:
+                id:
+                  type: integer
+                title:
+                  type: string
+                completed:
+                  type: boolean
     delete:
       summary: Delete Todo
       description: Delete a single todo
@@ -91,9 +105,9 @@ components:
       type: object
       description: A task that needs to be done or has been done
       example:
-          id: 1
-          title: Complete Sponsor Bingo card
-          completed: false
+        id: 1
+        title: Complete Sponsor Bingo card
+        completed: false
       properties:
         id:
           type: integer

@@ -14,11 +14,6 @@ class TodoApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
     public function test_fetch_todos()
     {
         Spectator::using('TodoMVC.yaml');
@@ -36,5 +31,59 @@ class TodoApiTest extends TestCase
                 'title' => $todos->first()->title,
                 'completed' => $todos->first()->completed,
             ]);
+    }
+
+    public function test_create_todo()
+    {
+        Spectator::using('TodoMVC.yaml');
+        $this->withoutExceptionHandling();
+
+        $todo = ['completed' => true, 'title' => 'Turpis a adipiscing'];
+
+        $response = $this->postJson('/api/todos', $todo);
+
+        $response
+            ->assertValidRequest()
+            ->assertValidResponse(201);
+
+        $this->assertDatabaseHas('todos', $todo);
+    }
+
+    public function test_update_todo()
+    {
+        Spectator::using('TodoMVC.yaml');
+        $this->withoutExceptionHandling();
+
+        $todo = Todo::factory()->create();
+
+        $response = $this->patchJson("/api/todos/{$todo->id}", [
+            'title' => $todo->title . 'abc',
+        ]);
+
+        $response
+            ->assertValidRequest()
+            ->assertValidResponse(200);
+
+        $this->assertDatabaseHas('todos', [
+            'title' => $todo->title . 'abc',
+        ]);
+    }
+
+    public function test_delete_todo()
+    {
+        Spectator::using('TodoMVC.yaml');
+        $this->withoutExceptionHandling();
+
+        $todo = Todo::factory()->create();
+
+        $response = $this->deleteJson("/api/todos/{$todo->id}");
+
+        $response
+            ->assertValidRequest()
+            ->assertValidResponse(204);
+
+        $this->assertDatabaseMissing('todos', [
+            'title' => $todo->title,
+        ]);
     }
 }
