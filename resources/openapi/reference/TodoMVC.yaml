@@ -24,29 +24,8 @@ paths:
                 minItems: 1
                 uniqueItems: true
                 items:
-                  type: object
-                  additionalProperties: false
-                  properties:
-                    id:
-                      type: integer
-                      minimum: 1
-                    title:
-                      type: string
-                    completed:
-                      type: boolean
-                  required:
-                    - id
-                    - title
-                    - completed
-              examples:
-                example-1:
-                  value:
-                    - id: 1
-                      title: Complete Sponsor Bingo Card
-                      completed: false
-                    - id: 2
-                      title: Rate talks on Joind.in
-                      completed: false
+                  $ref: '#/components/schemas/Todo'
+              examples: {}
       operationId: get-todos
       description: Get all todos
     post:
@@ -61,33 +40,40 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  title:
-                    type: string
-                  completed:
-                    type: boolean
-                required:
-                  - id
-                  - title
-                  - completed
+                $ref: '#/components/schemas/Todo'
       description: Create a new todo
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                completed:
-                  type: boolean
-              required:
-                - title
-                - completed
+              $ref: '#/components/schemas/Todo'
+        description: ''
 components:
-  schemas: {}
+  schemas:
+    Todo:
+      title: Todo
+      type: object
+      x-tags:
+        - Todos
+      description: A task that needs to be done or has been done
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          readOnly: true
+        title:
+          type: string
+        completed:
+          type: boolean
+      required:
+        - id
+        - title
+      examples:
+        - id: 1
+          title: Complete Sponsor Bingo card
+          completed: false
+        - id: 2
+          title: Purchase Longhorn PHP ticket
+          completed: true
 tags:
   - name: Todos
