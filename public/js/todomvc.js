@@ -71,6 +71,8 @@ const app = Vue.createApp({
       if (!value) {
         return;
       }
+      // TODO: don't add todo to list until you have saved it and
+      // retrieved an ID from the response
       this.todos.push({
         id: todoStorage.uid++,
         title: value,
@@ -80,8 +82,12 @@ const app = Vue.createApp({
     },
 
     removeTodo(todo) {
-      // TODO: remove this todo from the list after a successful DELETE request
-      this.todos.splice(this.todos.indexOf(todo), 1);
+      const url = BASE_URL + '/todos/' + todo.id;
+      fetch(url, {method: 'DELETE'})
+        .then(response => {
+          this.todos.splice(this.todos.indexOf(todo), 1);
+        })
+        .catch(err => console.log(err));
     },
 
     editTodo(todo) {
@@ -108,10 +114,10 @@ const app = Vue.createApp({
     },
 
     removeCompleted() {
-      // TODO: run each todo through this.removeTodo() instead
-      // of replacing the full list
-      // const completed = filters.completed(this.todos);
-      this.todos = filters.active(this.todos);
+      filters.completed(this.todos)
+        .forEach(todo => {
+          this.removeTodo(todo);
+        });
     },
 
     fetch() {
