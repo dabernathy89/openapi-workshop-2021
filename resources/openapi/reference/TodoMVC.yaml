@@ -48,6 +48,41 @@ paths:
             schema:
               $ref: '#/components/schemas/Todo'
         description: ''
+  '/todos/{todoId}':
+    parameters:
+      - schema:
+          type: integer
+          minimum: 1
+        name: todoId
+        in: path
+        required: true
+        description: Todo ID
+    patch:
+      summary: Update Todo
+      tags:
+        - Todos
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+      operationId: patch-todos-todoId
+      description: Update the details of a single todo.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+    delete:
+      summary: Delete Todo
+      tags:
+        - Todos
+      responses:
+        '204':
+          description: No Content
+      operationId: delete-todos-todoId
 components:
   schemas:
     Todo:
