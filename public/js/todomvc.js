@@ -2,19 +2,12 @@
 // and hash-based routing in ~120 effective lines of JavaScript.
 
 // localStorage persistence
-const STORAGE_KEY = "todos-vuejs-2.0";
+const BASE_URL = 'http://127.0.0.1:3101';
+const JSON_HEADERS = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json',
+};
 const todoStorage = {
-  fetch() {
-    const todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    todos.forEach((todo, index) => {
-      todo.id = index;
-    });
-    todoStorage.uid = todos.length;
-    return todos;
-  },
-  save(todos) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-  }
 };
 
 // visibility filters
@@ -35,21 +28,15 @@ const app = Vue.createApp({
   // app initial state
   data() {
     return {
-      todos: todoStorage.fetch(),
+      todos: [],
       newTodo: "",
       editedTodo: null,
       visibility: "all"
     }
   },
 
-  // watch todos change for localStorage persistence
-  watch: {
-    todos: {
-      handler(todos) {
-        todoStorage.save(todos);
-      },
-      deep: true
-    }
+  created() {
+    this.fetch();
   },
 
   // computed properties
@@ -107,6 +94,7 @@ const app = Vue.createApp({
       }
       this.editedTodo = null;
       todo.title = todo.title.trim();
+      // TODO: call save method here and pass in todo object
       if (!todo.title) {
         this.removeTodo(todo);
       }
@@ -119,6 +107,25 @@ const app = Vue.createApp({
 
     removeCompleted() {
       this.todos = filters.active(this.todos);
+    },
+
+    fetch() {
+      fetch(BASE_URL + '/todos')
+        .then(response => response.json())
+        .then(data => {
+          this.todos = data;
+        })
+        .catch(err => console.log(err));
+    },
+
+    save(todo) {
+      // TODO: pass correct JSON body to the correct enpdoint for PATCH
+      // const url = ;
+      // fetch(url, {
+      //   method: 'PATCH',
+      //   headers: JSON_HEADERS,
+      //   body: '',
+      // });
     }
   },
 
