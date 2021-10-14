@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTodo;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class TodoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateTodo $request)
     {
         $todo = Todo::create([
             'title' => $request->input('title'),

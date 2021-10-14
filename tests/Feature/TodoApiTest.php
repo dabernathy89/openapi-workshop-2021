@@ -86,4 +86,14 @@ class TodoApiTest extends TestCase
             'title' => $todo->title,
         ]);
     }
+
+    public function test_completed_must_be_boolean()
+    {
+        $todo = ['completed' => 'abc', 'title' => 'Donec est sed'];
+
+        $response = $this->postJson('/api/todos', $todo);
+        $response->assertStatus(422);
+
+        $this->assertDatabaseMissing('todos', ['title' =>  'Donec est sed']);
+    }
 }
