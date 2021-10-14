@@ -49,6 +49,44 @@ paths:
                       completed: false
       operationId: get-todos
       description: Get all todos
+    post:
+      summary: Create Todo
+      tags:
+        - Todos
+      operationId: post-todos
+      responses:
+        '201':
+          description: Created
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  completed:
+                    type: boolean
+                required:
+                  - id
+                  - title
+                  - completed
+      description: Create a new todo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                completed:
+                  type: boolean
+              required:
+                - title
+                - completed
 components:
   schemas: {}
 tags:
