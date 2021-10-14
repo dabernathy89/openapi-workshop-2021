@@ -26,7 +26,7 @@ class TodoFactory extends Factory
                 $this->faker->numberBetween(2, 5),
                 true
             ),
-            'completed' => $this->faker->boolean,
+            'completed' => $this->faker->boolean(),
         ];
     }
 }

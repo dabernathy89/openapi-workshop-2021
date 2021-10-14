@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 use App\Models\Todo;
+use Spectator\Spectator;
 
 class TodoApiTest extends TestCase
 {
@@ -20,12 +21,15 @@ class TodoApiTest extends TestCase
      */
     public function test_fetch_todos()
     {
+        Spectator::using('TodoMVC.yaml');
+        $this->withoutExceptionHandling();
         $todos = Todo::factory()->count(5)->create();
 
         $response = $this->getJson('/api/todos');
 
         $response
-            ->assertStatus(200)
+            ->assertValidRequest()
+            ->assertValidResponse(200)
             ->assertJsonCount(5)
             ->assertJsonFragment([
                 'id' => $todos->first()->id,
