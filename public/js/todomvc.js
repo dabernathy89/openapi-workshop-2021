@@ -71,14 +71,24 @@ const app = Vue.createApp({
       if (!value) {
         return;
       }
-      // TODO: don't add todo to list until you have saved it and
-      // retrieved an ID from the response
-      this.todos.push({
-        id: todoStorage.uid++,
-        title: value,
-        completed: false
-      });
-      this.newTodo = "";
+      fetch(BASE_URL + '/todos', {
+        method: 'POST',
+        headers: JSON_HEADERS,
+        body: JSON.stringify({
+          title: value,
+          completed: false,
+        }),
+      })
+        .then(response => response.json())
+        .then(todo => {
+          this.todos.splice(0, 0, {
+            id: todo.id,
+            title: todo.title,
+            completed: todo.completed
+          });
+          this.newTodo = "";
+        })
+        .catch(err => console.log(err));
     },
 
     removeTodo(todo) {
