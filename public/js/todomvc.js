@@ -80,6 +80,7 @@ const app = Vue.createApp({
     },
 
     removeTodo(todo) {
+      // TODO: remove this todo from the list after a successful DELETE request
       this.todos.splice(this.todos.indexOf(todo), 1);
     },
 
@@ -94,9 +95,10 @@ const app = Vue.createApp({
       }
       this.editedTodo = null;
       todo.title = todo.title.trim();
-      // TODO: call save method here and pass in todo object
       if (!todo.title) {
         this.removeTodo(todo);
+      } else {
+        this.save(todo);
       }
     },
 
@@ -106,6 +108,9 @@ const app = Vue.createApp({
     },
 
     removeCompleted() {
+      // TODO: run each todo through this.removeTodo() instead
+      // of replacing the full list
+      // const completed = filters.completed(this.todos);
       this.todos = filters.active(this.todos);
     },
 
@@ -119,13 +124,15 @@ const app = Vue.createApp({
     },
 
     save(todo) {
-      // TODO: pass correct JSON body to the correct enpdoint for PATCH
-      // const url = ;
-      // fetch(url, {
-      //   method: 'PATCH',
-      //   headers: JSON_HEADERS,
-      //   body: '',
-      // });
+      const url = BASE_URL + '/todos/' + todo.id;
+      fetch(url, {
+        method: 'PATCH',
+        headers: JSON_HEADERS,
+        body: JSON.stringify({
+          title: todo.title,
+          completed: todo.completed,
+        }),
+      });
     }
   },
 
